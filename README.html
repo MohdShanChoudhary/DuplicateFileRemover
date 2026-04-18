@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>README - Duplicate File Remover</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 50%, #161b22 100%); border: 1px solid #30363d; border-radius: 16px; padding: 48px 40px; text-align: center; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 30%, rgba(88,166,255,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 70%, rgba(63,185,80,0.06) 0%, transparent 50%); }
+  .hero-icon { font-size: 64px; margin-bottom: 16px; display: block; position: relative; z-index: 1; }
+  .hero h1 { font-size: 42px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px; position: relative; z-index: 1; }
+  .hero h1 span { background: linear-gradient(90deg, #58a6ff, #3fb950); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 18px; color: #8b949e; margin-bottom: 24px; position: relative; z-index: 1; }
+  .badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+  .badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+  .badge-blue { background: rgba(88,166,255,0.15); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
+  .badge-green { background: rgba(63,185,80,0.15); color: #3fb950; border: 1px solid rgba(63,185,80,0.3); }
+  .badge-orange { background: rgba(210,153,34,0.15); color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: #bc8cff; border: 1px solid rgba(188,140,255,0.3); }
+
+  /* Sections */
+  .section { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 28px 32px; margin-bottom: 20px; }
+  .section-title { font-size: 20px; font-weight: 700; color: #f0f6fc; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+
+  /* Feature Grid */
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .feature-card { background: #0d1117; border: 1px solid #21262d; border-radius: 10px; padding: 18px; transition: border-color 0.2s; }
+  .feature-card:hover { border-color: #58a6ff; }
+  .feature-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+  .feature-title { font-size: 13px; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+  .feature-desc { font-size: 12px; color: #8b949e; line-height: 1.5; }
+
+  /* File Tree */
+  .file-tree { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 20px 24px; font-family: 'Fira Code', 'Courier New', monospace; font-size: 13px; }
+  .tree-line { padding: 3px 0; }
+  .tree-folder { color: #58a6ff; font-weight: 600; }
+  .tree-file { color: #c9d1d9; }
+  .tree-comment { color: #8b949e; font-style: italic; margin-left: 12px; }
+  .tree-indent { display: inline-block; }
+
+  /* Module Table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #21262d; color: #e6edf3; padding: 10px 14px; text-align: left; font-weight: 600; }
+  th:first-child { border-radius: 6px 0 0 6px; }
+  th:last-child { border-radius: 0 6px 6px 0; }
+  td { padding: 10px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .module-name { font-family: 'Fira Code', monospace; color: #79c0ff; font-weight: 600; }
+  .layer-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .layer-ui { background: rgba(188,140,255,0.15); color: #bc8cff; }
+  .layer-service { background: rgba(88,166,255,0.15); color: #58a6ff; }
+  .layer-model { background: rgba(63,185,80,0.15); color: #3fb950; }
+  .layer-util { background: rgba(210,153,34,0.15); color: #d29922; }
+
+  /* Algorithm Flow */
+  .algo-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+  .algo-step { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px 18px; flex: 1; min-width: 140px; text-align: center; }
+  .algo-step-num { font-size: 11px; color: #58a6ff; font-weight: 700; margin-bottom: 4px; }
+  .algo-step-title { font-size: 13px; font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
+  .algo-step-desc { font-size: 11px; color: #8b949e; }
+  .algo-arrow { color: #30363d; font-size: 20px; padding: 0 6px; }
+
+  /* Code block */
+  .code-block { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 18px 20px; font-family: 'Fira Code', 'Courier New', monospace; font-size: 13px; overflow-x: auto; }
+  .code-block .kw { color: #ff7b72; }
+  .code-block .type { color: #79c0ff; }
+  .code-block .str { color: #a5d6ff; }
+  .code-block .comment { color: #8b949e; font-style: italic; }
+  .code-block .num { color: #79c0ff; }
+
+  /* Tech stack */
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .tech-item { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .tech-icon { font-size: 24px; }
+  .tech-name { font-size: 13px; font-weight: 700; color: #e6edf3; }
+  .tech-detail { font-size: 11px; color: #8b949e; }
+
+  /* Commands */
+  .cmd-box { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 14px 18px; font-family: 'Fira Code', monospace; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .cmd-prompt { color: #3fb950; }
+  .cmd-text { color: #e6edf3; }
+
+  /* Stats bar */
+  .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat-card { background: #0d1117; border: 1px solid #21262d; border-radius: 10px; padding: 18px; text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 700; color: #58a6ff; }
+  .stat-label { font-size: 12px; color: #8b949e; margin-top: 4px; }
+
+  /* Footer */
+  .footer { text-align: center; color: #8b949e; font-size: 13px; margin-top: 32px; padding: 20px; border-top: 1px solid #21262d; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-icon">🔍</span>
+    <h1>Duplicate File <span>Remover</span></h1>
+    <p class="hero-sub">Content-based duplicate detection using SHA-256 hashing</p>
+    <div class="badges">
+      <span class="badge badge-blue">☕ Java 11+</span>
+      <span class="badge badge-green">🎨 JavaFX 17</span>
+      <span class="badge badge-orange">🔐 SHA-256</span>
+      <span class="badge badge-purple">⚡ Multi-threaded</span>
+      <span class="badge badge-blue">🛡️ Safe Delete</span>
+      <span class="badge badge-green">✅ JUnit 5</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="section">
+    <div class="section-title">📊 Project at a Glance</div>
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-num">13</div><div class="stat-label">Source Files</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Core Modules</div></div>
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Unit Tests</div></div>
+      <div class="stat-card"><div class="stat-num">N</div><div class="stat-label">CPU Threads</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="section-title">✨ Key Features</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🔐</span>
+        <div class="feature-title">SHA-256 Hashing</div>
+        <div class="feature-desc">Content-based detection. File names are irrelevant — only bytes matter.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Size Pre-Filter</div>
+        <div class="feature-desc">Skips hashing unique-size files. Reduces I/O by up to 80% on typical folders.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧵</span>
+        <div class="feature-title">Multi-threaded</div>
+        <div class="feature-desc">Uses all CPU cores via ExecutorService for parallel file hashing.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🛡️</span>
+        <div class="feature-title">Soft Delete</div>
+        <div class="feature-desc">Files moved to trash — not permanently deleted. Full undo support.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📂</span>
+        <div class="feature-title">Multi-folder</div>
+        <div class="feature-desc">Scan multiple directories simultaneously in a single operation.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔧</span>
+        <div class="feature-title">File Type Filter</div>
+        <div class="feature-desc">Filter by extension: jpg, png, mp4 — or scan everything.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT STRUCTURE -->
+  <div class="section">
+    <div class="section-title">📁 Project Structure</div>
+    <div class="file-tree">
+      <div class="tree-line"><span class="tree-folder">DuplicateFileRemover/</span></div>
+      <div class="tree-line">├── <span class="tree-file">pom.xml</span><span class="tree-comment">← Maven build + JavaFX dependencies</span></div>
+      <div class="tree-line">├── <span class="tree-file">README.md</span></div>
+      <div class="tree-line">└── <span class="tree-folder">src/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">main/java/com/duplicatefinder/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">MainApp.java</span><span class="tree-comment">← JavaFX entry point</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">model/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">DuplicateGroup.java</span><span class="tree-comment">← One group of identical files</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">ScanResult.java</span><span class="tree-comment">← Full scan stats + groups</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">service/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">FileScanner.java</span><span class="tree-comment">← Recursive traversal</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">HashGenerator.java</span><span class="tree-comment">← SHA-256 + size filter</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">DuplicateFinder.java</span><span class="tree-comment">← Pipeline orchestrator</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">FileManager.java</span><span class="tree-comment">← Soft delete + undo</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">ui/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">MainWindow.java</span><span class="tree-comment">← Full JavaFX GUI</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">util/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">FileUtils.java</span><span class="tree-comment">← Size formatter, icons</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">main/resources/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">styles.css</span><span class="tree-comment">← JavaFX stylesheet</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">test/java/</span></div>
+      <div class="tree-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">HashGeneratorTest.java</span><span class="tree-comment">← 6 JUnit 5 tests</span></div>
+    </div>
+  </div>
+
+  <!-- MODULES -->
+  <div class="section">
+    <div class="section-title">🧩 Module Breakdown</div>
+    <table>
+      <tr>
+        <th>Module</th>
+        <th>File</th>
+        <th>Layer</th>
+        <th>Responsibility</th>
+      </tr>
+      <tr>
+        <td><strong>1 — File Scanner</strong></td>
+        <td class="module-name">FileScanner.java</td>
+        <td><span class="layer-badge layer-service">Service</span></td>
+        <td>Recursive walk via Files.walkFileTree(). Skips hidden + no-read files. Supports extension filters.</td>
+      </tr>
+      <tr>
+        <td><strong>2 — Hash Generator</strong></td>
+        <td class="module-name">HashGenerator.java</td>
+        <td><span class="layer-badge layer-service">Service</span></td>
+        <td>Groups files by size first, then SHA-256 hashes only size-collision candidates. Multi-threaded via ExecutorService.</td>
+      </tr>
+      <tr>
+        <td><strong>3 — Duplicate Finder</strong></td>
+        <td class="module-name">DuplicateFinder.java</td>
+        <td><span class="layer-badge layer-service">Service</span></td>
+        <td>Orchestrates the full pipeline: Scanner → Size Filter → Hash → Group → ScanResult.</td>
+      </tr>
+      <tr>
+        <td><strong>4 — GUI</strong></td>
+        <td class="module-name">MainWindow.java</td>
+        <td><span class="layer-badge layer-ui">UI</span></td>
+        <td>JavaFX interface. Folder selector, scan button, results cards, per-group keep/delete radio, undo button.</td>
+      </tr>
+      <tr>
+        <td><strong>5 — File Manager</strong></td>
+        <td class="module-name">FileManager.java</td>
+        <td><span class="layer-badge layer-service">Service</span></td>
+        <td>Soft delete: moves files to .DuplicateFinderTrash. Undo restores originals. emptyTrash() for permanent cleanup.</td>
+      </tr>
+      <tr>
+        <td><strong>Models</strong></td>
+        <td class="module-name">DuplicateGroup, ScanResult</td>
+        <td><span class="layer-badge layer-model">Model</span></td>
+        <td>Immutable data containers. DuplicateGroup holds hash + file list + keep selection. ScanResult has stats + groups.</td>
+      </tr>
+      <tr>
+        <td><strong>Utilities</strong></td>
+        <td class="module-name">FileUtils.java</td>
+        <td><span class="layer-badge layer-util">Util</span></td>
+        <td>formatSize(), getExtension(), getFileTypeIcon(), truncatePath() — shared across layers.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ALGORITHM -->
+  <div class="section">
+    <div class="section-title">⚙️ Algorithm Pipeline</div>
+    <div class="algo-flow">
+      <div class="algo-step">
+        <div class="algo-step-num">STEP 1</div>
+        <div class="algo-step-title">📂 Scan</div>
+        <div class="algo-step-desc">Files.walkFileTree() recursive</div>
+      </div>
+      <div class="algo-arrow">→</div>
+      <div class="algo-step">
+        <div class="algo-step-num">STEP 2</div>
+        <div class="algo-step-title">📏 Size Filter</div>
+        <div class="algo-step-desc">HashMap&lt;Long, List&lt;File&gt;&gt;</div>
+      </div>
+      <div class="algo-arrow">→</div>
+      <div class="algo-step">
+        <div class="algo-step-num">STEP 3</div>
+        <div class="algo-step-title">🔐 SHA-256</div>
+        <div class="algo-step-desc">Multi-threaded hashing</div>
+      </div>
+      <div class="algo-arrow">→</div>
+      <div class="algo-step">
+        <div class="algo-step-num">STEP 4</div>
+        <div class="algo-step-title">🗂 Group</div>
+        <div class="algo-step-desc">HashMap&lt;String, List&lt;File&gt;&gt;</div>
+      </div>
+      <div class="algo-arrow">→</div>
+      <div class="algo-step">
+        <div class="algo-step-num">STEP 5</div>
+        <div class="algo-step-title">✅ Result</div>
+        <div class="algo-step-desc">DuplicateGroup[] sorted</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA STRUCTURE -->
+  <div class="section">
+    <div class="section-title">📊 Data Structures</div>
+    <div class="code-block">
+      <span class="comment">// Step 1 — Pre-filter by size (O(n), no disk I/O)</span><br>
+      <span class="type">HashMap</span>&lt;<span class="type">Long</span>, <span class="type">List</span>&lt;<span class="type">File</span>&gt;&gt; sizeMap;<br><br>
+      <span class="comment">// Step 2 — Hash only size-collision files (concurrent)</span><br>
+      <span class="type">ConcurrentHashMap</span>&lt;<span class="type">String</span>, <span class="type">List</span>&lt;<span class="type">File</span>&gt;&gt; hashMap;<br><br>
+      <span class="comment">// Result — one group per unique hash with duplicates</span><br>
+      <span class="kw">class</span> <span class="type">DuplicateGroup</span> {<br>
+      &nbsp;&nbsp;<span class="type">String</span> hash;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// SHA-256 identifier</span><br>
+      &nbsp;&nbsp;<span class="type">List</span>&lt;<span class="type">File</span>&gt; files;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// all identical files</span><br>
+      &nbsp;&nbsp;<span class="type">File</span> fileToKeep;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// user selection</span><br>
+      }
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <div class="section-title">🛠️ Technology Stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><span class="tech-icon">☕</span><div><div class="tech-name">Java 11+</div><div class="tech-detail">Core language</div></div></div>
+      <div class="tech-item"><span class="tech-icon">🎨</span><div><div class="tech-name">JavaFX 17</div><div class="tech-detail">GUI framework</div></div></div>
+      <div class="tech-item"><span class="tech-icon">🔐</span><div><div class="tech-name">SHA-256</div><div class="tech-detail">MessageDigest API</div></div></div>
+      <div class="tech-item"><span class="tech-icon">🧵</span><div><div class="tech-name">ExecutorService</div><div class="tech-detail">Thread pooling</div></div></div>
+      <div class="tech-item"><span class="tech-icon">📁</span><div><div class="tech-name">java.nio.file</div><div class="tech-detail">File operations</div></div></div>
+      <div class="tech-item"><span class="tech-icon">🧪</span><div><div class="tech-name">JUnit 5</div><div class="tech-detail">Unit testing</div></div></div>
+      <div class="tech-item"><span class="tech-icon">📦</span><div><div class="tech-name">Maven</div><div class="tech-detail">Build tool</div></div></div>
+      <div class="tech-item"><span class="tech-icon">🗺️</span><div><div class="tech-name">HashMap</div><div class="tech-detail">Core data structure</div></div></div>
+    </div>
+  </div>
+
+  <!-- HOW TO RUN -->
+  <div class="section">
+    <div class="section-title">▶️ Quick Start</div>
+    <div class="cmd-box"><span class="cmd-prompt">$</span><span class="cmd-text">cd DuplicateFileRemover</span></div>
+    <div class="cmd-box"><span class="cmd-prompt">$</span><span class="cmd-text">mvn javafx:run</span></div>
+    <div class="cmd-box"><span class="cmd-prompt">$</span><span class="cmd-text">mvn test &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# run unit tests</span></div>
+    <div class="cmd-box"><span class="cmd-prompt">$</span><span class="cmd-text">mvn package &amp;&amp; java -jar target/DuplicateFileRemover-1.0.0.jar</span></div>
+  </div>
+
+  <!-- FUTURE -->
+  <div class="section">
+    <div class="section-title">🚀 Roadmap</div>
+    <div class="feature-grid">
+      <div class="feature-card"><span class="feature-icon">🖼</span><div class="feature-title">Image Preview</div><div class="feature-desc">Thumbnail preview inside each duplicate card</div></div>
+      <div class="feature-card"><span class="feature-icon">🌙</span><div class="feature-title">Dark Mode</div><div class="feature-desc">System theme auto-detection</div></div>
+      <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">CSV Export</div><div class="feature-desc">Export duplicate report to CSV/PDF</div></div>
+      <div class="feature-card"><span class="feature-icon">🗑</span><div class="feature-title">Trash Scheduler</div><div class="feature-desc">Auto-empty trash after 7 days</div></div>
+    </div>
+  </div>
+
+  <div class="footer">Built with ☕ Java + 🎨 JavaFX &nbsp;|&nbsp; Content-based • SHA-256 • Multi-threaded • Safe Delete</div>
+</div>
+</body>
+</html>

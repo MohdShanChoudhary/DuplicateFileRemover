@@ -1,0 +1,96 @@
+/* Duplicate File Remover - JavaFX Stylesheet */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: #ffffff;
+}
+
+/* Buttons */
+.button {
+    -fx-cursor: hand;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-size: 12px;
+}
+
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.button:pressed {
+    -fx-opacity: 0.8;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 10;
+    -fx-font-size: 12px;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+}
+
+/* List view */
+.list-view {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-size: 11px;
+}
+
+.list-cell:selected {
+    -fx-background-color: #d0e8f5;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Progress bar */
+.progress-bar > .track {
+    -fx-background-color: #e9ecef;
+}
+
+/* Scroll pane */
+.scroll-pane {
+    -fx-background-color: #f8f9fa;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Separator */
+.separator {
+    -fx-padding: 4 0;
+}
+
+/* Radio buttons */
+.radio-button .radio {
+    -fx-border-color: #adb5bd;
+}
+
+.radio-button:selected .radio {
+    -fx-mark-color: #27ae60;
+    -fx-border-color: #27ae60;
+}
+
+/* Check box */
+.check-box .box {
+    -fx-border-color: #adb5bd;
+    -fx-border-radius: 3;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #3498db;
+    -fx-border-color: #3498db;
+}
+
+/* Alerts */
+.dialog-pane {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
